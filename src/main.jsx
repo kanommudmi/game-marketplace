@@ -4,18 +4,18 @@ import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "./views/Layout.jsx";
-import LandingPage from "./views/LandingPage";
 import ActionGamesPage from "./views/ActionGamesPage";
 import RacingPage from "./views/RacingPage";
 import SportsPage from "./views/SportsPage";
 import RpgPage from "./views/RpgPage";
 import StrategyPage from "./views/StrategyPage";
 import ShootingPage from "./views/ShootingPage";
+import LandingPage from "./views/LandingPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <App />,
     errorElement: (
       // You can write JSX in here by ()
       <div className="min-h-screen flex justify-center items-center">
@@ -23,19 +23,21 @@ const router = createBrowserRouter([
       </div>
     ),
     children: [
-      { path: "/", element: <LandingPage /> },
-      { path: "/category/action", element: <ActionGamesPage /> },
-      { path: "/category/racing", element: <RacingPage /> },
-      { path: "/category/sports", element: <SportsPage /> },
-      { path: "/category/rpg", element: <RpgPage /> },
-      { path: "/category/strategy", element: <StrategyPage /> },
-      { path: "/category/shooting", element: <ShootingPage /> },
+      {
+        path: "/",
+        element: <Layout />,
+        children: [
+          { path: "/", element: <LandingPage /> },
+          { path: "/category/action", element: <ActionGamesPage /> },
+          { path: "/category/racing", element: <RacingPage /> },
+          { path: "/category/sports", element: <SportsPage /> },
+          { path: "/category/rpg", element: <RpgPage /> },
+          { path: "/category/strategy", element: <StrategyPage /> },
+          { path: "/category/shooting", element: <ShootingPage /> },
+        ],
+      },
     ],
   },
 ]);
 
-createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router}>
-    <App />
-  </RouterProvider>
-);
+createRoot(document.getElementById("root")).render(<RouterProvider router={router} />);
