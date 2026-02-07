@@ -11,6 +11,8 @@ import RpgPage from "./views/RpgPage";
 import StrategyPage from "./views/StrategyPage";
 import ShootingPage from "./views/ShootingPage";
 import LandingPage from "./views/LandingPage";
+import ProductDetailPage from "./views/ProductDetailPage";
+import { CartProvider } from "./context/CartContext";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,7 @@ const router = createBrowserRouter([
         element: <Layout />,
         children: [
           { path: "/", element: <LandingPage /> },
+          { path: "/product/:id", element: <ProductDetailPage /> },
           { path: "/category/action", element: <ActionGamesPage /> },
           { path: "/category/racing", element: <RacingPage /> },
           { path: "/category/sports", element: <SportsPage /> },
@@ -40,4 +43,8 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById("root")).render(<RouterProvider router={router} />);
+createRoot(document.getElementById("root")).render(
+  <CartProvider>
+    <RouterProvider router={router} />
+  </CartProvider>
+);

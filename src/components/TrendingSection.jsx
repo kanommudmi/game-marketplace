@@ -1,8 +1,16 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import { useNavigate } from "react-router-dom";
+import { allProducts } from "@/mockdata/games";
 
 const TrendingSection = () => {
-  const games = ["MW II", "Need for Speed", "Far Cry 5", "FC24", "Cyberpunk 2077", "GTA V"];
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+
+  const trendingGames = allProducts.filter((game) => 
+    [101, 102, 103, 11, 1, 2].includes(game.id)
+  );
 
   return (
     <section>
@@ -14,12 +22,13 @@ const TrendingSection = () => {
       </div>
 
       <div className="grid grid-cols-6 gap-4">
-        {games.map((game) => (
-          <Card key={game} className="bg-black/40 border-none hover:scale-105 transition">
-            <CardContent className="p-2 space-y-2">
-              <div className="h-40 rounded-lg bg-linear-to-br from-slate-700 to-slate-900" />
-              <p className="text-white text-sm font-medium">{game}</p>
-              <p className="text-xs text-lime-400">FREE / $59.99</p>
+        {trendingGames.map((game) => (
+          <Card key={game.id} className="bg-black/40 border-none hover:scale-105 transition cursor-pointer" onClick={() => navigate(`/product/${game.id}`)}>
+            <CardContent className="flex flex-col p-2 space-y-2">
+              <img src={game.imageUrl} alt={game.title} className="h-40 rounded-lg object-cover" />
+              <p className="text-white text-sm font-medium">{game.title}</p>
+              <p className="text-xs text-lime-400">${game.price}</p>
+              <Button onClick={(e) => { e.stopPropagation(); addToCart(game); }} className="w-full bg-lime-400 text-black text-xs">Add to Cart</Button>
             </CardContent>
           </Card>
         ))}

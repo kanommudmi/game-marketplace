@@ -1,27 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useCart } from "@/context/CartContext";
+import { useNavigate } from "react-router-dom";
+import { allProducts } from "@/mockdata/games";
 
 const RpgPage = () => {
-  const games = [
-    {
-      id: 1,
-      title: "Cyberpunk 2077",
-      price: 59.99,
-      imageUrl: "https://placehold.co/300x400",
-    },
-    {
-      id: 2,
-      title: "GTA V",
-      price: 29.99,
-      imageUrl: "https://placehold.co/300x400",
-    },
-    {
-      id: 3,
-      title: "Far Cry 6",
-      price: 49.99,
-      imageUrl: "https://placehold.co/300x400",
-    },
-  ];
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+
+  const games = allProducts.filter((game) => game.category === "rpg");
 
   return (
     <div className="min-h-screen bg-[#0b0f1a] text-white p-10">
@@ -29,12 +16,14 @@ const RpgPage = () => {
 
       <div className="grid grid-cols-4 gap-6">
         {games.map((game) => (
-          <Card key={game.id} className="bg-black/40 border-none hover:scale-105 transition">
+          <Card key={game.id} className="bg-black/40 border-none hover:scale-105 transition cursor-pointer" onClick={() => navigate(`/product/${game.id}`)}>
             <CardContent className="flex flex-col p-3 space-y-2">
               <img src={game.imageUrl} alt={game.title} className="rounded-lg" />
               <p className="font-semibold text-white">{game.title}</p>
               <p className="text-lime-400 text-sm">${game.price}</p>
-              <Button className="w-full bg-lime-400 text-black">Add to Cart</Button>
+              <div className="flex gap-2">
+                <Button onClick={(e) => { e.stopPropagation(); addToCart(game); }} className="flex-1 bg-lime-400 text-black text-sm">Add to Cart</Button>
+              </div>
             </CardContent>
           </Card>
         ))}
