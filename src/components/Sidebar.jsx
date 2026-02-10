@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Bell, MessageCircle, Users, Gamepad2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -16,9 +17,11 @@ const Sidebar = () => {
       <Button size="icon" variant="ghost">
         🛒
       </Button>
-      <Button size="icon" variant="ghost">
-        ⚙️
-      </Button>
+      <Link to="/profile">
+        <Button size="icon" variant="ghost">
+          ⚙️
+        </Button>
+      </Link>
     </aside>
   );
 };

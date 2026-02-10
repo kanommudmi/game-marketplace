@@ -4,10 +4,10 @@ import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ArrowLeft, Mail, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Mail, ShoppingBag, Plus, Minus, Trash2 } from "lucide-react";
 
 const CheckoutPage = () => {
-  const { cart } = useCart();
+  const { cart, updateQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +96,29 @@ const CheckoutPage = () => {
                     />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium truncate">{item.title}</h3>
-                      <p className="text-sm text-slate-400">Qty: {item.quantity}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          className="w-6 h-6 flex items-center justify-center bg-slate-700 rounded hover:bg-slate-600 text-white text-sm"
+                        >
+                          <Minus className="w-3 h-3" />
+                        </button>
+                        <span className="text-sm text-white min-w-[20px] text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="w-6 h-6 flex items-center justify-center bg-lime-400 rounded hover:bg-lime-500 text-black text-sm"
+                        >
+                          <Plus className="w-3 h-3" />
+                        </button>
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="ml-2 w-6 h-6 flex items-center justify-center bg-red-500/20 rounded hover:bg-red-500/40 text-red-400"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
                     </div>
                     <span className="text-lime-400 font-semibold">
                       ${(item.price * item.quantity).toFixed(2)}

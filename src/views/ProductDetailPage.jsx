@@ -114,6 +114,10 @@ const ProductDetailPage = () => {
               <Button 
                 variant="outline"
                 className="w-full border-lime-400 text-lime-400 hover:bg-lime-400/10"
+                onClick={() => {
+                  addToCart(product);
+                  navigate('/checkout');
+                }}
               >
                 Buy Now
               </Button>
