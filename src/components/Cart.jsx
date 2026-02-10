@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { cart, removeFromCart } = useCart();
+  const navigate = useNavigate();
 
   return (
     <aside className="w-80 bg-[#0b0f1a] border border-white/10 p-4 rounded-lg space-y-4 shadow-2xl">
@@ -36,7 +38,7 @@ const Cart = () => {
               ${cart.reduce((sum, i) => sum + i.price, 0).toFixed(2)}
             </span>
           </div>
-          <Button className="w-full bg-lime-400 text-black font-semibold">Checkout</Button>
+          <Button onClick={() => navigate('/checkout')} className="w-full bg-lime-400 text-black font-semibold">Checkout</Button>
         </div>
       )}
     </aside>

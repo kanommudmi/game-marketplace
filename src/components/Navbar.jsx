@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bell, MessageCircle, Users, Wallet, Gamepad2, ShoppingCart } from "lucide-react";
+import { Bell, MessageCircle, User, Gamepad2, ShoppingCart, LogIn } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 import Cart from "./Cart";
+import ThemeToggle from "./ThemeToggle";
 
 export function Navbar() {
   const { cart } = useCart();
@@ -24,10 +25,18 @@ export function Navbar() {
             <Input placeholder="Search" className="w-72 bg-black/40 border-none text-sm" />
           </div>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <Button className="bg-lime-400 text-black font-semibold">$ 5.49 USD</Button>
-            <Button size="icon" variant="secondary">
-              <Users />
-            </Button>
+            <Link to="/login">
+              <Button size="icon" variant="secondary">
+                <LogIn />
+              </Button>
+            </Link>
+            <Link to="/profile">
+              <Button size="icon" variant="secondary">
+                <User />
+              </Button>
+            </Link>
             <Button size="icon" variant="secondary">
               <MessageCircle />
             </Button>
