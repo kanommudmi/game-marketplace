@@ -14,45 +14,13 @@ const defaultUser = {
   location: "United States",
   totalGamesOwned: 0,
   totalSpent: 0,
+  walletBalance: 10.0,
 };
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("userProfile");
-      return saved ? JSON.parse(saved) : defaultUser;
-    }
-    return defaultUser;
-  });
-
-  const [orders, setOrders] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("userOrders");
-      return saved ? JSON.parse(saved) : generateMockOrders();
-    }
-    return generateMockOrders();
-  });
-
-  const [wishlist, setWishlist] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("userWishlist");
-      return saved ? JSON.parse(saved) : [];
-    }
-    return [];
-  });
-
-  // Persist user data to localStorage
-  useEffect(() => {
-    localStorage.setItem("userProfile", JSON.stringify(user));
-  }, [user]);
-
-  useEffect(() => {
-    localStorage.setItem("userOrders", JSON.stringify(orders));
-  }, [orders]);
-
-  useEffect(() => {
-    localStorage.setItem("userWishlist", JSON.stringify(wishlist));
-  }, [wishlist]);
+  const [user, setUser] = useState(defaultUser);
+  const [orders, setOrders] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   const updateProfile = (updates) => {
     setUser((prev) => ({
@@ -91,15 +59,37 @@ export const UserProvider = ({ children }) => {
       total: total,
       status: "completed",
     };
-    
+
     setOrders((prev) => [newOrder, ...prev]);
-    
-    // Update user stats
+
+    // Update user stats and deduct from wallet
     setUser((prev) => ({
       ...prev,
       totalGamesOwned: prev.totalGamesOwned + cartItems.length,
       totalSpent: prev.totalSpent + total,
+      walletBalance: prev.walletBalance - total,
     }));
+  };
+
+  const addToWallet = (amount) => {
+    setUser((prev) => ({
+      ...prev,
+      walletBalance: prev.walletBalance + amount,
+    }));
+    toast.success(`$${amount.toFixed(2)} added to your wallet!`);
+  };
+
+  const deductFromWallet = (amount) => {
+    setUser((prev) => {
+      if (prev.walletBalance < amount) {
+        toast.error("Insufficient funds in wallet");
+        return prev;
+      }
+      return {
+        ...prev,
+        walletBalance: prev.walletBalance - amount,
+      };
+    });
   };
 
   const isInWishlist = (gameId) => {
@@ -120,6 +110,8 @@ export const UserProvider = ({ children }) => {
     addOrder,
     isInWishlist,
     getOrderById,
+    addToWallet,
+    deductFromWallet,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

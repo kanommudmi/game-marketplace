@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Bell, MessageCircle, Users, Gamepad2 } from "lucide-react";
 import ActionCategory from "./categories/ActionCategory";
 import RacingCategory from "./categories/RacingCategory";
 import SportsCategory from "./categories/SportsCategory";
@@ -13,9 +11,6 @@ const BrowseByCategories = () => {
     <section>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">Browse By Categories</h3>
-        <Button variant="link" className="text-lime-400">
-          Explore All
-        </Button>
       </div>
 
       <div className="grid grid-cols-3 gap-4">

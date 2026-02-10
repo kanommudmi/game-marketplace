@@ -17,7 +17,7 @@ export const CartProvider = ({ children }) => {
           <img 
             src={product.imageUrl} 
             alt={product.title}
-            className="w-12 h-12 rounded-md object-cover"
+            className="w-12 h-12 rounded-sm object-cover"
           />
           <div className="flex flex-col">
             <span className="font-medium text-sm">{product.title}</span>

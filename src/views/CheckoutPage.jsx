@@ -87,19 +87,19 @@ const CheckoutPage = () => {
                 {cart.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 bg-black/30 p-3 rounded-lg"
+                    className="flex items-center gap-4 bg-black/30 p-3 rounded-sm"
                   >
                     <img
                       src={item.imageUrl}
                       alt={item.title}
-                      className="w-16 h-16 rounded-md object-cover"
+                      className="w-16 h-16 rounded-sm object-cover"
                     />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium truncate">{item.title}</h3>
                       <div className="flex items-center gap-2 mt-1">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-6 h-6 flex items-center justify-center bg-slate-700 rounded hover:bg-slate-600 text-white text-sm"
+                          className="w-6 h-6 flex items-center justify-center bg-slate-700 rounded-sm hover:bg-slate-600 text-white text-sm"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
@@ -108,13 +108,13 @@ const CheckoutPage = () => {
                         </span>
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-6 h-6 flex items-center justify-center bg-lime-400 rounded hover:bg-lime-500 text-black text-sm"
+                          className="w-6 h-6 flex items-center justify-center bg-lime-400 rounded-sm hover:bg-lime-500 text-black text-sm"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
                         <button
                           onClick={() => removeFromCart(item.id)}
-                          className="ml-2 w-6 h-6 flex items-center justify-center bg-red-500/20 rounded hover:bg-red-500/40 text-red-400"
+                          className="ml-2 w-6 h-6 flex items-center justify-center bg-red-500/20 rounded-sm hover:bg-red-500/40 text-red-400"
                         >
                           <Trash2 className="w-3 h-3" />
                         </button>
