@@ -12,16 +12,22 @@ import StrategyPage from "./views/StrategyPage";
 import ShootingPage from "./views/ShootingPage";
 import LandingPage from "./views/LandingPage";
 import ProductDetailPage from "./views/ProductDetailPage";
+import CheckoutPage from "./views/CheckoutPage";
+import ProfilePage from "./views/ProfilePage";
+import LoginPage from "./views/LoginPage";
+import RegisterPage from "./views/RegisterPage";
 import { CartProvider } from "./context/CartContext";
+import { UserProvider } from "./context/UserContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import { Toaster } from "@/components/ui/sonner";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: (
-      // You can write JSX in here by ()
       <div className="min-h-screen flex justify-center items-center">
-        <h1 className="text-4xl">404 - Page NOt Found 😭</h1>
+        <h1 className="text-4xl">404 - Page Not Found 😭</h1>
       </div>
     ),
     children: [
@@ -37,14 +43,23 @@ const router = createBrowserRouter([
           { path: "/category/rpg", element: <RpgPage /> },
           { path: "/category/strategy", element: <StrategyPage /> },
           { path: "/category/shooting", element: <ShootingPage /> },
+          { path: "/checkout", element: <CheckoutPage /> },
+          { path: "/profile", element: <ProfilePage /> },
         ],
       },
+      { path: "/login", element: <LoginPage /> },
+      { path: "/register", element: <RegisterPage /> },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router} />
-  </CartProvider>
+  <ThemeProvider>
+    <UserProvider>
+      <CartProvider>
+        <RouterProvider router={router} />
+        <Toaster />
+      </CartProvider>
+    </UserProvider>
+  </ThemeProvider>
 );
