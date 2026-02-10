@@ -7,15 +7,15 @@ const Cart = () => {
   const navigate = useNavigate();
 
   return (
-    <aside className="w-80 bg-[#0b0f1a] border border-white/10 p-4 rounded-lg space-y-4 shadow-2xl">
+    <aside className="w-80 bg-[#0b0f1a] border border-white/10 p-4 rounded-sm space-y-4 shadow-2xl">
       <h3 className="text-lg font-semibold">My Cart ({cart.length})</h3>
 
       {cart.length === 0 && <p className="text-sm text-slate-400">Cart is empty</p>}
 
       <div className="max-h-60 overflow-y-auto space-y-2">
         {cart.map((item) => (
-          <div key={item.id} className="flex items-center gap-3 bg-black/50 p-2 rounded-lg">
-            <img src={item.imageUrl} alt={item.title} className="w-12 h-12 rounded-md object-cover" />
+          <div key={item.id} className="flex items-center gap-3 bg-black/50 p-2 rounded-sm">
+            <img src={item.imageUrl} alt={item.title} className="w-12 h-12 rounded-sm object-cover" />
             <div className="flex-1">
               <p className="text-sm font-medium">{item.title}</p>
               <p className="text-xs text-lime-400">${item.price}</p>

@@ -28,7 +28,7 @@ const ProductDetailPage = () => {
   return (
     <div className="min-h-screen bg-[#0b0f1a] text-white p-10">
       <div className="max-w-6xl mx-auto">
-        <Button 
+        <Button
           onClick={() => navigate(-1)}
           variant="ghost"
           className="mb-6 text-lime-400 hover:text-lime-300"
@@ -41,10 +41,10 @@ const ProductDetailPage = () => {
           <div>
             <Card className="bg-black/40 border-none overflow-hidden">
               <CardContent className="p-0">
-                <img 
-                  src={product.imageUrl} 
-                  alt={product.title} 
-                  className="w-full rounded-lg"
+                <img
+                  src={product.imageUrl}
+                  alt={product.title}
+                  className="w-full rounded-sm"
                 />
               </CardContent>
             </Card>
@@ -60,7 +60,9 @@ const ProductDetailPage = () => {
                 </div>
                 <div className="flex items-center gap-1 text-slate-400">
                   <Calendar className="w-4 h-4" />
-                  <span>{new Date(product.releaseDate).toLocaleDateString()}</span>
+                  <span>
+                    {new Date(product.releaseDate).toLocaleDateString()}
+                  </span>
                 </div>
               </div>
             </div>
@@ -95,9 +97,9 @@ const ProductDetailPage = () => {
 
             <div className="flex flex-wrap gap-2">
               {product.tags.map((tag, index) => (
-                <span 
+                <span
                   key={index}
-                  className="px-3 py-1 bg-lime-400/20 text-lime-400 text-sm rounded-full"
+                  className="px-3 py-1 bg-lime-400/20 text-lime-400 text-sm rounded-sm"
                 >
                   {tag}
                 </span>
@@ -105,15 +107,18 @@ const ProductDetailPage = () => {
             </div>
 
             <div className="space-y-3 pt-4 border-t border-white/10">
-              <Button 
+              <Button
                 onClick={() => addToCart(product)}
                 className="w-full bg-lime-400 text-black font-semibold text-lg py-6"
               >
                 Add to Cart
               </Button>
-              <Button 
+              <Button
                 variant="outline"
                 className="w-full border-lime-400 text-lime-400 hover:bg-lime-400/10"
+                onClick={() => {
+                  navigate("/checkout");
+                }}
               >
                 Buy Now
               </Button>

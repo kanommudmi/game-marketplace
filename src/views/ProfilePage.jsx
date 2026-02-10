@@ -79,7 +79,7 @@ const ProfilePage = () => {
                   <img
                     src={user.avatarUrl}
                     alt={user.displayName}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-lime-400"
+                    className="w-16 h-16 rounded-sm object-cover border-2 border-lime-400"
                   />
                   <div>
                     <h3 className="font-semibold text-lg">{user.displayName}</h3>
@@ -95,7 +95,7 @@ const ProfilePage = () => {
                       <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-sm text-left transition-colors ${
                           activeTab === tab.id
                             ? "bg-lime-400 text-black font-medium"
                             : "text-slate-300 hover:bg-white/5"
@@ -123,7 +123,7 @@ const ProfilePage = () => {
                       <img
                         src={user.avatarUrl}
                         alt={user.displayName}
-                        className="w-24 h-24 rounded-full object-cover border-4 border-lime-400/30"
+                        className="w-24 h-24 rounded-sm object-cover border-4 border-lime-400/30"
                       />
                       <div className="flex-1">
                         <h2 className="text-2xl font-bold mb-1">{user.displayName}</h2>
@@ -157,7 +157,7 @@ const ProfilePage = () => {
                       <Card key={index} className="bg-[#151921] border-white/10">
                         <CardContent className="p-4">
                           <div className="flex items-center gap-3">
-                            <div className="p-3 bg-lime-400/10 rounded-lg">
+                            <div className="p-3 bg-lime-400/10 rounded-sm">
                               <Icon className="w-6 h-6 text-lime-400" />
                             </div>
                             <div>
@@ -190,7 +190,7 @@ const ProfilePage = () => {
                         {orders.slice(0, 3).map((order) => (
                           <div
                             key={order.id}
-                            className="flex items-center gap-4 p-3 bg-black/30 rounded-lg"
+                            className="flex items-center gap-4 p-3 bg-black/30 rounded-sm"
                           >
                             <div className="flex -space-x-2">
                               {order.items.slice(0, 3).map((item, idx) => (
@@ -198,11 +198,11 @@ const ProfilePage = () => {
                                   key={idx}
                                   src={item.imageUrl}
                                   alt={item.title}
-                                  className="w-10 h-10 rounded-md object-cover border-2 border-[#151921]"
+                                  className="w-10 h-10 rounded-sm object-cover border-2 border-[#151921]"
                                 />
                               ))}
                               {order.items.length > 3 && (
-                                <div className="w-10 h-10 rounded-md bg-slate-700 flex items-center justify-center text-xs border-2 border-[#151921]">
+                                <div className="w-10 h-10 rounded-sm bg-slate-700 flex items-center justify-center text-xs border-2 border-[#151921]">
                                   +{order.items.length - 3}
                                 </div>
                               )}
@@ -241,7 +241,7 @@ const ProfilePage = () => {
                       <img
                         src={editForm.avatarUrl}
                         alt="Avatar preview"
-                        className="w-20 h-20 rounded-full object-cover border-2 border-lime-400"
+                        className="w-20 h-20 rounded-sm object-cover border-2 border-lime-400"
                       />
                       <div className="flex-1">
                         <label className="text-sm font-medium block mb-2">
@@ -314,7 +314,7 @@ const ProfilePage = () => {
                         }
                         placeholder="Tell us about yourself..."
                         rows={4}
-                        className="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-lime-400/50 focus:border-lime-400"
+                        className="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-lime-400/50 focus:border-lime-400"
                       />
                     </div>
 
@@ -379,7 +379,7 @@ const ProfilePage = () => {
                         {orders.map((order) => (
                           <div
                             key={order.id}
-                            className="bg-black/30 rounded-lg p-4 space-y-4"
+                            className="bg-black/30 rounded-sm p-4 space-y-4"
                           >
                             {/* Order Header */}
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-white/10">
@@ -391,7 +391,7 @@ const ProfilePage = () => {
                               </div>
                               <div className="flex items-center gap-4">
                                 <span
-                                  className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                  className={`px-3 py-1 rounded-sm text-sm font-medium ${
                                     order.status === "completed"
                                       ? "bg-green-500/20 text-green-400"
                                       : "bg-yellow-500/20 text-yellow-400"
@@ -416,7 +416,7 @@ const ProfilePage = () => {
                                   <img
                                     src={item.imageUrl}
                                     alt={item.title}
-                                    className="w-16 h-16 rounded-md object-cover"
+                                    className="w-16 h-16 rounded-sm object-cover"
                                   />
                                   <div className="flex-1">
                                     <h4 className="font-medium">{item.title}</h4>
@@ -471,12 +471,12 @@ const ProfilePage = () => {
                         {wishlist.map((game) => (
                           <div
                             key={game.id}
-                            className="bg-black/30 rounded-lg p-4 flex gap-4 group"
+                            className="bg-black/30 rounded-sm p-4 flex gap-4 group"
                           >
                             <img
                               src={game.imageUrl}
                               alt={game.title}
-                              className="w-24 h-32 rounded-md object-cover"
+                              className="w-24 h-32 rounded-sm object-cover"
                             />
                             <div className="flex-1 flex flex-col">
                               <h4 className="font-semibold text-lg mb-1">

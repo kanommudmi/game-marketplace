@@ -17,7 +17,7 @@ export const CartProvider = ({ children }) => {
           <img 
             src={product.imageUrl} 
             alt={product.title}
-            className="w-12 h-12 rounded-md object-cover"
+            className="w-12 h-12 rounded-sm object-cover"
           />
           <div className="flex flex-col">
             <span className="font-medium text-sm">{product.title}</span>
@@ -44,8 +44,24 @@ export const CartProvider = ({ children }) => {
     setCart((prev) => prev.filter((item) => item.id !== productId));
   };
 
+  const updateQuantity = (productId, quantity) => {
+    if (quantity < 1) {
+      removeFromCart(productId);
+      return;
+    }
+    setCart((prev) =>
+      prev.map((item) =>
+        item.id === productId ? { ...item, quantity } : item
+      )
+    );
+  };
+
+  const clearCart = () => {
+    setCart([]);
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}>
       {children}
     </CartContext.Provider>
   );

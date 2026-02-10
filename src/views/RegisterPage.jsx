@@ -126,7 +126,7 @@ const RegisterPage = () => {
           <CardHeader className="text-center pb-2">
             {/* Logo */}
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-lime-400 rounded-2xl flex items-center justify-center">
+              <div className="w-16 h-16 bg-lime-400 rounded-sm flex items-center justify-center">
                 <Gamepad2 className="w-8 h-8 text-black" />
               </div>
             </div>
@@ -226,7 +226,7 @@ const RegisterPage = () => {
                       {[1, 2, 3, 4, 5].map((level) => (
                         <div
                           key={level}
-                          className={`h-1 flex-1 rounded-full ${
+                          className={`h-1 flex-1 rounded-sm ${
                             level <=
                             passwordRequirements.filter((r) => r.valid).length
                               ? passwordStrength.color
@@ -249,7 +249,7 @@ const RegisterPage = () => {
                   {passwordRequirements.map((req, index) => (
                     <div key={index} className="flex items-center gap-2 text-xs">
                       <div
-                        className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                        className={`w-4 h-4 rounded-sm flex items-center justify-center ${
                           req.valid
                             ? "bg-green-500/20 text-green-400"
                             : "bg-slate-700 text-slate-500"
@@ -270,7 +270,7 @@ const RegisterPage = () => {
                             />
                           </svg>
                         ) : (
-                          <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                          <div className="w-1.5 h-1.5 rounded-sm bg-current" />
                         )}
                       </div>
                       <span
@@ -327,7 +327,7 @@ const RegisterPage = () => {
                     name="agreeToTerms"
                     checked={formData.agreeToTerms}
                     onChange={handleChange}
-                    className="w-4 h-4 mt-0.5 rounded border-white/20 bg-black/30 text-lime-400 focus:ring-lime-400/20"
+                    className="w-4 h-4 mt-0.5 rounded-sm border-white/20 bg-black/30 text-lime-400 focus:ring-lime-400/20"
                   />
                   <span className="text-sm text-slate-400">
                     I agree to the{" "}

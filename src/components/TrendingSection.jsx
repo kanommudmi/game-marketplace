@@ -16,16 +16,13 @@ const TrendingSection = () => {
     <section>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold">Trending</h2>
-        <Button variant="link" className="text-lime-400">
-          Explore All
-        </Button>
       </div>
 
       <div className="grid grid-cols-6 gap-4">
         {trendingGames.map((game) => (
           <Card key={game.id} className="bg-black/40 border-none hover:scale-105 transition cursor-pointer" onClick={() => navigate(`/product/${game.id}`)}>
             <CardContent className="flex flex-col p-2 space-y-2">
-              <img src={game.imageUrl} alt={game.title} className="h-40 rounded-lg object-cover" />
+              <img src={game.imageUrl} alt={game.title} className="h-40 rounded-sm object-cover" />
               <p className="text-white text-sm font-medium">{game.title}</p>
               <p className="text-xs text-lime-400">${game.price}</p>
               <Button onClick={(e) => { e.stopPropagation(); addToCart(game); }} className="w-full bg-lime-400 text-black text-xs">Add to Cart</Button>

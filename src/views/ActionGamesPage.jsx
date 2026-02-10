@@ -18,7 +18,7 @@ const ActionGamesPage = () => {
         {games.map((game) => (
           <Card key={game.id} className="bg-black/40 border-none hover:scale-105 transition cursor-pointer" onClick={() => navigate(`/product/${game.id}`)}>
             <CardContent className="flex flex-col p-3 space-y-2">
-              <img src={game.imageUrl} alt={game.title} className="rounded-lg" />
+              <img src={game.imageUrl} alt={game.title} className="rounded-sm" />
               <p className="font-semibold text-white">{game.title}</p>
               <p className="text-lime-400 text-sm">${game.price}</p>
               <div className="flex gap-2">

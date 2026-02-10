@@ -79,7 +79,7 @@ const LoginPage = () => {
           <CardHeader className="text-center pb-2">
             {/* Logo */}
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-lime-400 rounded-2xl flex items-center justify-center">
+              <div className="w-16 h-16 bg-lime-400 rounded-sm flex items-center justify-center">
                 <Gamepad2 className="w-8 h-8 text-black" />
               </div>
             </div>
@@ -158,7 +158,7 @@ const LoginPage = () => {
                     name="rememberMe"
                     checked={formData.rememberMe}
                     onChange={handleChange}
-                    className="w-4 h-4 rounded border-white/20 bg-black/30 text-lime-400 focus:ring-lime-400/20"
+                    className="w-4 h-4 rounded-sm border-white/20 bg-black/30 text-lime-400 focus:ring-lime-400/20"
                   />
                   <span className="text-sm text-slate-400">Remember me</span>
                 </label>
