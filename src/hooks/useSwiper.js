@@ -20,19 +20,10 @@ export const useSwiper = (options = {}) => {
     };
   }, [swiperInstance]);
 
-  useEffect(() => {
-    if (swiperInstance) {
-      swiperInstance.update();
-    }
-  }, [options, swiperInstance]);
-
   const defaultOptions = {
-    slidesPerView: 2,
+    slidesPerView: "auto",
     spaceBetween: 16,
-    breakpoints: {
-      640: { slidesPerView: 3 },
-      768: { slidesPerView: 4 },
-    },
+    centeredSlides: true,
     grabCursor: true,
     keyboard: true,
     mousewheel: { forceToAxis: true },
