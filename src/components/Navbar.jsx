@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Bell, MessageCircle, User, Gamepad2, ShoppingCart, LogIn, Menu, X } from "lucide-react"; // Added Menu and X
 import { useCart } from "@/context/CartContext";
 import { useUser } from "@/context/UserContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Cart from "./Cart";
 import ThemeToggle from "./ThemeToggle";
 
@@ -18,6 +18,7 @@ export function Navbar() {
   const [exchangeRate, setExchangeRate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const cartRef = useRef(null);
 
   const walletBalance = user?.walletBalance || 0;
 
@@ -42,6 +43,20 @@ export function Navbar() {
     const interval = setInterval(fetchExchangeRate, 300000);
     return () => clearInterval(interval);
   }, []);
+
+  // Close cart when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cartRef.current && !cartRef.current.contains(event.target)) {
+        setShowCart(false);
+      }
+    };
+
+    if (showCart) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showCart]);
 
   const toggleCurrency = () => {
     setCurrency(prev => prev === "USD" ? "THB" : "USD");
@@ -103,7 +118,7 @@ export function Navbar() {
             <Button size="icon" variant="secondary">
               <Bell />
             </Button>
-            <div className="relative">
+            <div className="relative" ref={cartRef}>
               <Button
                 size="icon"
                 variant="secondary"
@@ -157,7 +172,7 @@ export function Navbar() {
               <Bell className="mr-2" /> Notifications
             </Button>
             {/* Cart Button for Mobile Menu */}
-            <div className="relative w-full">
+            <div className="relative w-full" ref={cartRef}>
               <Button
                 variant="secondary"
                 onClick={() => setShowCart(!showCart)}
