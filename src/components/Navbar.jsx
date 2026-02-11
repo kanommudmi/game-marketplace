@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bell, MessageCircle, User, Gamepad2, ShoppingCart, LogIn } from "lucide-react";
+import { Bell, MessageCircle, User, Gamepad2, ShoppingCart, LogIn, Menu, X } from "lucide-react"; // Added Menu and X
 import { useCart } from "@/context/CartContext";
 import { useUser } from "@/context/UserContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Cart from "./Cart";
 import ThemeToggle from "./ThemeToggle";
 
@@ -13,12 +13,13 @@ export function Navbar() {
   const { cart } = useCart();
   const { user } = useUser();
   const [showCart, setShowCart] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false); // New state for mobile menu
   const [currency, setCurrency] = useState("USD");
   const [exchangeRate, setExchangeRate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
-  
-  // Use real wallet balance from UserContext
+  const cartRef = useRef(null);
+
   const walletBalance = user?.walletBalance || 0;
 
   const fetchExchangeRate = async () => {
@@ -39,11 +40,23 @@ export function Navbar() {
 
   useEffect(() => {
     fetchExchangeRate();
-    
-    // Refresh rate every 5 minutes
     const interval = setInterval(fetchExchangeRate, 300000);
     return () => clearInterval(interval);
   }, []);
+
+  // Close cart when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cartRef.current && !cartRef.current.contains(event.target)) {
+        setShowCart(false);
+      }
+    };
+
+    if (showCart) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showCart]);
 
   const toggleCurrency = () => {
     setCurrency(prev => prev === "USD" ? "THB" : "USD");
@@ -51,29 +64,39 @@ export function Navbar() {
 
   const usdAmount = walletBalance;
   const thbAmount = exchangeRate ? (walletBalance * exchangeRate) : null;
-  
-  // Always show USD immediately, THB only when rate is available
-  const displayText = currency === "USD" 
+
+  const displayText = currency === "USD"
     ? `$ ${usdAmount.toFixed(2)} USD`
-    : thbAmount 
+    : thbAmount
       ? `฿ ${thbAmount.toFixed(2)} THB`
       : '฿ Loading...';
 
   return (
     <>
       <div className="bg-linear-to-br from-[#0b0f1a] to-[#141a2a] text-white">
-        <nav className="flex items-center justify-between px-8 py-4">
+        <nav className="flex items-center justify-between px-4 py-3 md:px-8 md:py-4"> {/* Adjusted padding for mobile */}
+          {/* Left side: Logo and Search */}
           <div className="flex items-center gap-4">
             <Link to="/">
               <div className="flex items-center gap-3">
                 <Gamepad2 className="text-lime-400" />
               </div>
             </Link>
-            <Input placeholder="Search" className="w-72 bg-black/40 border-none text-sm" />
+            {/* Search Input - hidden on mobile, block on md+ */}
+            <Input placeholder="Search" className="hidden md:block w-72 bg-black/40 border-none text-sm" />
           </div>
-          <div className="flex items-center gap-3">
+
+          {/* Hamburger menu icon - visible on mobile, hidden on md+ */}
+          <div className="md:hidden flex items-center">
+            <Button size="icon" variant="ghost" onClick={() => setShowMobileMenu(!showMobileMenu)}>
+              {showMobileMenu ? <X /> : <Menu />}
+            </Button>
+          </div>
+
+          {/* Right side: Controls and Icons (Desktop) */}
+          <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
-            <Button 
+            <Button
               onClick={toggleCurrency}
               className="bg-lime-400 text-black font-semibold min-w-[140px]"
             >
@@ -95,10 +118,10 @@ export function Navbar() {
             <Button size="icon" variant="secondary">
               <Bell />
             </Button>
-            <div className="relative">
-              <Button 
-                size="icon" 
-                variant="secondary" 
+            <div className="relative" ref={cartRef}>
+              <Button
+                size="icon"
+                variant="secondary"
                 onClick={() => setShowCart(!showCart)}
                 className="relative"
               >
@@ -119,6 +142,59 @@ export function Navbar() {
             </div>
           </div>
         </nav>
+
+        {/* Mobile Menu (visible when showMobileMenu is true) */}
+        {showMobileMenu && (
+          <div className="md:hidden bg-linear-to-br from-[#0b0f1a] to-[#141a2a] p-4 space-y-4 flex flex-col items-center">
+            {/* Search Input for Mobile */}
+            <Input placeholder="Search" className="w-full bg-black/40 border-none text-sm" />
+            <ThemeToggle />
+            <Button
+              onClick={toggleCurrency}
+              className="bg-lime-400 text-black font-semibold w-full"
+            >
+              {displayText}
+            </Button>
+            <Link to="/login" className="w-full">
+              <Button variant="secondary" className="w-full">
+                <LogIn className="mr-2" /> Login
+              </Button>
+            </Link>
+            <Link to="/profile" className="w-full">
+              <Button variant="secondary" className="w-full">
+                <User className="mr-2" /> Profile
+              </Button>
+            </Link>
+            <Button variant="secondary" className="w-full">
+              <MessageCircle className="mr-2" /> Messages
+            </Button>
+            <Button variant="secondary" className="w-full">
+              <Bell className="mr-2" /> Notifications
+            </Button>
+            {/* Cart Button for Mobile Menu */}
+            <div className="relative w-full" ref={cartRef}>
+              <Button
+                variant="secondary"
+                onClick={() => setShowCart(!showCart)}
+                className="relative w-full"
+              >
+                <ShoppingCart className="mr-2" /> Cart
+                {cart.length > 0 && (
+                  <span className="absolute right-2 top-1/2 -translate-y-1/2 bg-lime-400 text-black text-xs w-5 h-5 rounded-sm flex items-center justify-center font-bold">
+                    {cart.length}
+                  </span>
+                )}
+              </Button>
+              {showCart && (
+                <div className="absolute left-0 right-0 top-full mt-2 z-50">
+                  <div className="bg-black/90 rounded-sm p-2">
+                    <Cart />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

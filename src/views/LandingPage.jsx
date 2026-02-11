@@ -18,15 +18,17 @@ export default function LandingPage() {
   return (
     <>
       <div className="min-h-screen bg-linear-to-br from-[#0b0f1a] to-[#141a2a] text-white">
-        <div className="flex flex-row">
-          <Sidebar />
+        <div className="flex flex-col md:flex-row">
+          <div className="hidden md:flex">
+            <Sidebar />
+          </div>
 
-          <section className="flex-1 p-8 space-y-10">
+          <section className="flex-1 p-4 md:p-8 space-y-10 w-full">
             <TrendingSection />
             <BrowseByCategories />
           </section>
 
-          <div className="p-6">
+          <div className="hidden md:block p-4 md:p-6">
             <Cart items={cartItems} onRemove={removeFromCart} />
           </div>
         </div>
