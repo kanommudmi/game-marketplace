@@ -1,15 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bell, MessageCircle, User, Gamepad2, ShoppingCart, LogIn, Menu, X } from "lucide-react"; // Added Menu and X
+import { Bell, MessageCircle, User, Gamepad2, ShoppingCart, LogIn, Menu, X, Search } from "lucide-react"; // Added Menu and X
 import { useCart } from "@/context/CartContext";
 import { useUser } from "@/context/UserContext";
 import { useState, useEffect, useRef } from "react";
 import Cart from "./Cart";
 import ThemeToggle from "./ThemeToggle";
+import { allProducts } from "@/mockdata/games";
 
 export function Navbar() {
+  const navigate = useNavigate();
   const { cart } = useCart();
   const { user } = useUser();
   const [showCart, setShowCart] = useState(false);
@@ -20,7 +22,45 @@ export function Navbar() {
   const [lastUpdated, setLastUpdated] = useState(null);
   const cartRef = useRef(null);
 
+  // Search State
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const searchRef = useRef(null);
+
   const walletBalance = user?.walletBalance || 0;
+
+  // Search Logic
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setSearchResults([]);
+      return;
+    }
+
+    const results = allProducts.filter((product) =>
+      product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    setSearchResults(results.slice(0, 5));
+  }, [searchTerm]);
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchResults([]);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleResultClick = (id) => {
+    navigate(`/product/${id}`);
+    setSearchTerm("");
+    setSearchResults([]);
+    setShowMobileMenu(false);
+  };
 
   const fetchExchangeRate = async () => {
     try {
@@ -82,8 +122,61 @@ export function Navbar() {
                 <Gamepad2 className="text-lime-400" />
               </div>
             </Link>
-            {/* Search Input - hidden on mobile, block on md+ */}
-            <Input placeholder="Search" className="hidden md:block w-72 bg-black/40 border-none text-sm" />
+            {/* Search Input - Desktop */}
+            <div className="relative hidden md:block w-72" ref={searchRef}>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Input
+                  placeholder="Search games..."
+                  className="w-full bg-black/40 border-none text-sm pl-10 focus:ring-1 focus:ring-lime-400"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onFocus={() => {
+                    if (searchTerm) {
+                      const results = allProducts.filter((product) =>
+                        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+                      );
+                      setSearchResults(results.slice(0, 5));
+                    }
+                  }}
+                />
+              </div>
+
+              {/* Search Results Dropdown */}
+              {searchResults.length > 0 && (
+                <div className="absolute top-full left-0 w-full bg-[#151921] border border-white/10 rounded-b-sm mt-1 shadow-xl overflow-hidden z-50">
+                  {searchResults.map((game) => (
+                    <div
+                      key={game.id}
+                      className="flex items-center gap-3 p-3 hover:bg-white/5 cursor-pointer transition-colors border-b border-white/5 last:border-none"
+                      onClick={() => handleResultClick(game.id)}
+                    >
+                      <img
+                        src={game.imageUrl}
+                        alt={game.title}
+                        className="w-10 h-12 object-cover rounded-sm"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium text-white truncate">
+                          {game.title}
+                        </h4>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-400">
+                            {game.category}
+                          </span>
+                          <span className="text-xs text-lime-400 bg-lime-400/10 px-1 rounded-sm">
+                            ★ {game.rating}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold text-lime-400 whitespace-nowrap">
+                        {game.isFree ? "Free" : `$${game.price}`}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Hamburger menu icon - visible on mobile, hidden on md+ */}

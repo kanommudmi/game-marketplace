@@ -15,6 +15,7 @@ const defaultUser = {
   totalGamesOwned: 0,
   totalSpent: 0,
   walletBalance: 10.0,
+  role: "user",
 };
 
 export const UserProvider = ({ children }) => {
@@ -100,6 +101,37 @@ export const UserProvider = ({ children }) => {
     return orders.find((order) => order.id === orderId);
   };
 
+  const loginAsAdmin = () => {
+    setUser({
+      id: "admin_001",
+      displayName: "Admin",
+      email: "admin@gamestore.com",
+      avatarUrl: "https://placehold.co/150x150/10b981/white?text=A",
+      bio: "Game Store Administrator",
+      joinDate: "2024-01-01",
+      location: "Admin Office",
+      totalGamesOwned: 0,
+      totalSpent: 0,
+      walletBalance: 0,
+      role: "admin",
+    });
+    toast.success("Logged in as Administrator!");
+  };
+
+  const loginAsUser = () => {
+    setUser(defaultUser);
+    toast.success("Logged in as User!");
+  };
+
+  const logout = () => {
+    setUser(defaultUser);
+    setOrders([]);
+    setWishlist([]);
+    toast.success("Logged out successfully!");
+  };
+
+  const isAdmin = user.role === "admin";
+
   const value = {
     user,
     orders,
@@ -112,6 +144,10 @@ export const UserProvider = ({ children }) => {
     getOrderById,
     addToWallet,
     deductFromWallet,
+    loginAsAdmin,
+    loginAsUser,
+    logout,
+    isAdmin,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
