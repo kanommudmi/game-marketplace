@@ -16,6 +16,14 @@ import CheckoutPage from "./views/CheckoutPage";
 import ProfilePage from "./views/ProfilePage";
 import LoginPage from "./views/LoginPage";
 import RegisterPage from "./views/RegisterPage";
+import RatingsPage from "./views/RatingsPage";
+import UnauthorizedPage from "./views/UnauthorizedPage";
+import AdminDashboard from "./views/AdminDashboard";
+import GamesManagement from "./views/GamesManagement";
+import OrdersManagement from "./views/OrdersManagement";
+import UsersManagement from "./views/UsersManagement";
+import AdminLayout from "./components/AdminLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { CartProvider } from "./context/CartContext";
 import { UserProvider } from "./context/UserContext";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -45,10 +53,52 @@ const router = createBrowserRouter([
           { path: "/category/shooting", element: <ShootingPage /> },
           { path: "/checkout", element: <CheckoutPage /> },
           { path: "/profile", element: <ProfilePage /> },
+          { path: "/ratings", element: <RatingsPage /> },
         ],
       },
       { path: "/login", element: <LoginPage /> },
       { path: "/register", element: <RegisterPage /> },
+      { path: "/unauthorized", element: <UnauthorizedPage /> },
+      {
+        path: "/admin",
+        element: (
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/games",
+        element: (
+          <ProtectedRoute>
+            <AdminLayout>
+              <GamesManagement />
+            </AdminLayout>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/orders",
+        element: (
+          <ProtectedRoute>
+            <AdminLayout>
+              <OrdersManagement />
+            </AdminLayout>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/users",
+        element: (
+          <ProtectedRoute>
+            <AdminLayout>
+              <UsersManagement />
+            </AdminLayout>
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
@@ -61,5 +111,5 @@ createRoot(document.getElementById("root")).render(
         <Toaster />
       </CartProvider>
     </UserProvider>
-  </ThemeProvider>
+  </ThemeProvider>,
 );

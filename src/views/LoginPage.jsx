@@ -3,18 +3,29 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, Gamepad2, ArrowLeft, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Gamepad2, ArrowLeft, Mail, Lock, Shield } from "lucide-react";
+import { useUser } from "@/context/UserContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { loginAsAdmin } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAdminLoading, setIsAdminLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false,
   });
   const [errors, setErrors] = useState({});
+
+  const handleAdminLogin = async () => {
+    setIsAdminLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    loginAsAdmin();
+    setIsAdminLoading(false);
+    navigate("/admin");
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -205,6 +216,47 @@ const LoginPage = () => {
                 )}
               </Button>
             </form>
+
+            {/* Admin Login Button */}
+            <div className="mt-4">
+              <Button
+                type="button"
+                onClick={handleAdminLogin}
+                disabled={isAdminLoading}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+              >
+                {isAdminLoading ? (
+                  <span className="flex items-center gap-2">
+                    <svg
+                      className="animate-spin h-5 w-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Logging in as Admin...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Shield className="w-4 h-4" />
+                    Login as Admin (Demo)
+                  </span>
+                )}
+              </Button>
+            </div>
 
             {/* Divider */}
             <div className="relative my-6">
