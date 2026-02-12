@@ -16,6 +16,7 @@ import CheckoutPage from "./views/CheckoutPage";
 import ProfilePage from "./views/ProfilePage";
 import LoginPage from "./views/LoginPage";
 import RegisterPage from "./views/RegisterPage";
+import RatingsPage from "./views/RatingsPage";
 import { CartProvider } from "./context/CartContext";
 import { UserProvider } from "./context/UserContext";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
           { path: "/category/shooting", element: <ShootingPage /> },
           { path: "/checkout", element: <CheckoutPage /> },
           { path: "/profile", element: <ProfilePage /> },
+          { path: "/ratings", element: <RatingsPage /> },
         ],
       },
       { path: "/login", element: <LoginPage /> },
