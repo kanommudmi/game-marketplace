@@ -1,6 +1,5 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { toast } from "sonner";
-import { generateMockOrders } from "@/mockdata/user";
 
 const UserContext = createContext();
 
@@ -14,7 +13,7 @@ const defaultUser = {
   location: "United States",
   totalGamesOwned: 0,
   totalSpent: 0,
-  walletBalance: 10.0,
+  walletBalance: 5000.0,
   role: "user",
 };
 
