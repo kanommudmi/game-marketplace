@@ -1,26 +1,52 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCart } from "@/context/CartContext";
+import { useGames } from "@/context/GamesContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Star, Calendar, Building2, Tag, ArrowLeft } from "lucide-react";
-import { allProducts } from "@/mockdata/games";
+import { Star, Calendar, Building2, Tag, ArrowLeft, Loader2 } from "lucide-react";
 
 const ProductDetailPage = () => {
   const { addToCart } = useCart();
+  const { getGameById, loading } = useGames();
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const found = allProducts.find((p) => p.id === parseInt(id));
-    setProduct(found);
-  }, [id]);
+    const loadProduct = async () => {
+      setIsLoading(true);
+      const found = await getGameById(id);
+      setProduct(found);
+      setIsLoading(false);
+    };
+    loadProduct();
+  }, [id, getGameById]);
+
+  if (isLoading || loading) {
+    return (
+      <div className="min-h-screen bg-[#0b0f1a] text-white p-10 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-lime-400" />
+        <span className="ml-2">Loading product...</span>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
       <div className="min-h-screen bg-[#0b0f1a] text-white p-10 flex items-center justify-center">
-        <p>Product not found</p>
+        <div className="text-center">
+          <p className="text-xl mb-4">Product not found</p>
+          <Button
+            onClick={() => navigate(-1)}
+            variant="outline"
+            className="border-lime-400 text-lime-400 hover:bg-lime-400/10"
+          >
+            <ArrowLeft className="mr-2" />
+            Go Back
+          </Button>
+        </div>
       </div>
     );
   }
@@ -37,7 +63,7 @@ const ProductDetailPage = () => {
           Back
         </Button>
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
             <Card className="bg-black/40 border-none overflow-hidden">
               <CardContent className="p-0">

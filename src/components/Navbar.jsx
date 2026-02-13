@@ -1,25 +1,23 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bell, MessageCircle, User, Gamepad2, ShoppingCart, LogIn, Menu, X, Search } from "lucide-react"; // Added Menu and X
+import { Bell, MessageCircle, User, Gamepad2, ShoppingCart, LogIn, Menu, X, Search } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useUser } from "@/context/UserContext";
+import { useGames } from "@/context/GamesContext";
 import { useState, useEffect, useRef } from "react";
 import Cart from "./Cart";
 import ThemeToggle from "./ThemeToggle";
-import { allProducts } from "@/mockdata/games";
 
 export function Navbar() {
   const navigate = useNavigate();
   const { cart } = useCart();
   const { user } = useUser();
+  const { games, loading: gamesLoading } = useGames();
   const [showCart, setShowCart] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false); // New state for mobile menu
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [currency, setCurrency] = useState("USD");
   const [exchangeRate, setExchangeRate] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState(null);
   const cartRef = useRef(null);
 
   // Search State
@@ -29,19 +27,20 @@ export function Navbar() {
 
   const walletBalance = user?.walletBalance || 0;
 
-  // Search Logic
+  // Search Logic using games from context
   useEffect(() => {
-    if (searchTerm.trim() === "") {
+    if (searchTerm.trim() === "" || gamesLoading) {
       setSearchResults([]);
       return;
     }
 
-    const results = allProducts.filter((product) =>
-      product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+    const results = games.filter(
+      (product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setSearchResults(results.slice(0, 5));
-  }, [searchTerm]);
+  }, [searchTerm, games, gamesLoading]);
 
   // Close search results when clicking outside
   useEffect(() => {
@@ -64,17 +63,13 @@ export function Navbar() {
 
   const fetchExchangeRate = async () => {
     try {
-      setIsLoading(true);
       const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
       const data = await response.json();
       if (data && data.rates && data.rates.THB) {
         setExchangeRate(data.rates.THB);
-        setLastUpdated(new Date().toLocaleTimeString());
       }
     } catch (error) {
       console.error('Failed to fetch exchange rate:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -114,7 +109,7 @@ export function Navbar() {
   return (
     <>
       <div className="bg-linear-to-br from-[#0b0f1a] to-[#141a2a] text-white">
-        <nav className="flex items-center justify-between px-4 py-3 md:px-8 md:py-4"> {/* Adjusted padding for mobile */}
+        <nav className="flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
           {/* Left side: Logo and Search */}
           <div className="flex items-center gap-4">
             <Link to="/">
@@ -132,8 +127,8 @@ export function Navbar() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => {
-                    if (searchTerm) {
-                      const results = allProducts.filter((product) =>
+                    if (searchTerm && !gamesLoading) {
+                      const results = games.filter((product) =>
                         product.title.toLowerCase().includes(searchTerm.toLowerCase())
                       );
                       setSearchResults(results.slice(0, 5));

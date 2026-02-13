@@ -27,6 +27,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { CartProvider } from "./context/CartContext";
 import { UserProvider } from "./context/UserContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import { GamesProvider } from "./context/GamesContext";
 import { Toaster } from "@/components/ui/sonner";
 
 const router = createBrowserRouter([
@@ -106,10 +107,12 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <ThemeProvider>
     <UserProvider>
-      <CartProvider>
-        <RouterProvider router={router} />
-        <Toaster />
-      </CartProvider>
+      <GamesProvider>
+        <CartProvider>
+          <RouterProvider router={router} />
+          <Toaster />
+        </CartProvider>
+      </GamesProvider>
     </UserProvider>
   </ThemeProvider>,
 );
