@@ -2,12 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/CartContext";
+import { useUser } from "@/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ArrowLeft, Mail, ShoppingBag, Plus, Minus, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 const CheckoutPage = () => {
-  const { cart, updateQuantity, removeFromCart } = useCart();
+  const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { addOrder, user } = useUser();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -18,12 +21,24 @@ const CheckoutPage = () => {
 
   const handleCompletePurchase = async () => {
     if (!email) return;
+
+    // Check if user has sufficient wallet balance
+    if (user.walletBalance < total) {
+      toast.error(`Insufficient funds. Your wallet balance: $${user.walletBalance.toFixed(2)}`);
+      return;
+    }
+
     setIsLoading(true);
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Save the order and clear the cart
+    addOrder(cart, total);
+    clearCart();
+
     setIsLoading(false);
-    // In a real app, this would redirect to a success page
-    alert("Purchase completed! Check your email for the download link.");
+    toast.success("Purchase completed! Check your email for the download link.");
+    navigate("/profile");
   };
 
   if (cart.length === 0) {

@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/CartContext";
+import { useGames } from "@/context/GamesContext";
 import { useNavigate } from "react-router-dom";
-import { allProducts } from "@/mockdata/games";
-import { Search, Star, SlidersHorizontal, X } from "lucide-react";
+import { Search, Star, SlidersHorizontal, X, Loader2 } from "lucide-react";
 
 const RatingsPage = () => {
   const { addToCart } = useCart();
+  const { games, loading: gamesLoading, categories } = useGames();
   const navigate = useNavigate();
 
   // Search and filter states
@@ -21,15 +22,9 @@ const RatingsPage = () => {
   const [sortBy, setSortBy] = useState("rating-desc");
   const [showFilters, setShowFilters] = useState(false);
 
-  // Get unique categories
-  const categories = useMemo(() => {
-    const cats = [...new Set(allProducts.map((p) => p.category))];
-    return cats.sort();
-  }, []);
-
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let result = [...allProducts];
+    let result = [...games];
 
     // Search filter
     if (searchQuery.trim()) {
@@ -90,7 +85,7 @@ const RatingsPage = () => {
     }
 
     return result;
-  }, [searchQuery, selectedCategory, minPrice, maxPrice, minRating, showFreeOnly, sortBy]);
+  }, [games, searchQuery, selectedCategory, minPrice, maxPrice, minRating, showFreeOnly, sortBy]);
 
   // Render star rating
   const renderStars = (rating) => {
@@ -133,6 +128,15 @@ const RatingsPage = () => {
     maxPrice !== "" ||
     minRating > 0 ||
     showFreeOnly;
+
+  if (gamesLoading) {
+    return (
+      <div className="min-h-screen bg-[#0b0f1a] text-white p-10 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-lime-400" />
+        <span className="ml-2">Loading games...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0b0f1a] text-white p-6 md:p-10">
