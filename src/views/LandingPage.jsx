@@ -12,7 +12,7 @@ export default function LandingPage() {
             <Sidebar />
           </div>
 
-          <section className="flex-1 p-6 space-y-10 w-full">
+          <section className="flex-1 p-6 space-y-8 w-full border border-gray-700/50 bg-[#0f1420] shadow-2xl">
             <TrendingSection />
             <BrowseByCategories />
           </section>

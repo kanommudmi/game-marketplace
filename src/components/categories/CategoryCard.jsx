@@ -1,6 +1,6 @@
 const CategoryCard = ({ title, gradient, image }) => (
   <div
-    className={`h-32 rounded-xl ${gradient} flex items-end p-4 text-sm font-semibold cursor-pointer relative overflow-hidden shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300`}
+    className={`h-32 ${gradient} flex items-end p-4 text-sm font-semibold cursor-pointer relative overflow-hidden border border-gray-700/30 shadow-lg hover:border-gray-500/50 hover:shadow-xl hover:scale-105 transition-all duration-300`}
     style={{
       backgroundImage: image ? `url(${image})` : undefined,
       backgroundSize: 'cover',

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const BrowseByCategories = () => {
   return (
-    <section>
+    <section className="border border-gray-700/30 bg-[#151924] p-6 shadow-lg">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">Browse By Categories</h3>
       </div>
