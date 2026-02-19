@@ -23,19 +23,19 @@ const TrendingSection = () => {
 
   if (loading) {
     return (
-      <section className="w-full">
+      <section className="w-full border border-gray-700/30 bg-[#151924] p-6 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold">Trending</h2>
         </div>
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="w-8 h-8 animate-spin text-lime-400" />
+          <Loader2 className="w-8 h-8 animate-spin text-white/50" />
         </div>
       </section>
     );
   }
 
   return (
-    <section className="w-full">
+    <section className="w-full border border-gray-700/30 bg-[#151924] p-6 shadow-lg">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold">Trending</h2>
       </div>
@@ -49,7 +49,7 @@ const TrendingSection = () => {
           onImageClick={handleImageClick}
         />
       ) : (
-        <div className="flex items-center justify-center h-64 bg-black/20 rounded-sm">
+        <div className="flex items-center justify-center h-64 bg-black/20 border border-gray-700/30">
           <p className="text-gray-400">No trending games available</p>
         </div>
       )}
